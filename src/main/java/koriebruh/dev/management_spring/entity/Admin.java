@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Getter
@@ -39,4 +39,13 @@ public class Admin {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt ;
 
+    // >ragu bg<
+    @OneToMany(mappedBy = "createdBy")
+    private List<Category> categories ;
+
+    @OneToMany(mappedBy = "createdBy")
+    private List<Supplier> suppliers ;
+
+    @OneToMany(mappedBy = "createdBy")
+    private  List<Item>items ;
 }

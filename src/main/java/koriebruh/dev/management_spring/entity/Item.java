@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "items")
 
-public class item {
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +37,11 @@ public class item {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    private Category categoryId;
 
     @ManyToOne
     @JoinColumn(name = "supplier_id", nullable = false)
-    private Supplier supplier;
+    private Supplier supplierId;
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)

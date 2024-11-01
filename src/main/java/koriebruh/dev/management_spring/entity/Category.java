@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.security.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,5 +39,8 @@ public class Category {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    // <ragu>
+    @OneToMany(mappedBy = "categoryId")
+    private List<Item> items ;
 
 }
