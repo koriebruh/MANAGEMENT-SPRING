@@ -1,0 +1,12 @@
+### GET request to example server
+POST http://localhost:8080/api/admins
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "koriebro",
+  "password": "Jamal123",
+  "email": "koriebro@gmail.com"
+}
+
+###

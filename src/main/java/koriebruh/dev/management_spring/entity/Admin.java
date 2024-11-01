@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,9 +34,11 @@ public class Admin {
     @Column(length = 500)
     private String email ;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt ;
 
+    @CreationTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt ;
 

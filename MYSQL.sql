@@ -4,4 +4,4 @@ USE management;
 
 SHOW TABLES ;
 
-
+select * FROM admins;
