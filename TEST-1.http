@@ -10,3 +10,6 @@ Content-Type: application/json
 }
 
 ###
+
+DELETE http://localhost:8080/api/admins/2
+Accept: application/json
