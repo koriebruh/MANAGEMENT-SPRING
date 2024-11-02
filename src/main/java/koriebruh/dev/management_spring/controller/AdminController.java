@@ -8,6 +8,7 @@ import koriebruh.dev.management_spring.model.LoginResponse;
 import koriebruh.dev.management_spring.model.RegisterRequest;
 import koriebruh.dev.management_spring.model.RegisterResponse;
 import koriebruh.dev.management_spring.service.AdminService;
+import koriebruh.dev.management_spring.utils.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class AdminController {
 
     @Autowired
      private AdminService adminService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping(path = "/register", consumes = "application/json")
     public ResponseEntity<RegisterResponse> addAdmin(@Validated @RequestBody RegisterRequest registerRequest) {
@@ -46,6 +49,11 @@ public class AdminController {
         cookie.setMaxAge(60 * 60 * 10); // Set cookie berlaku selama 10 jam
         response.addCookie(cookie); // Menambahkan cookie ke respons
 
+
+        String userLoginId = jwtUtil.extractIdUser(loginResponse.getToken());
+
+        // Debugging: lihat userLoginId yang diambil dari token
+        System.out.println("User ID from token: " + userLoginId);
 
         return ResponseEntity.ok(loginResponse);
     }
