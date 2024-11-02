@@ -6,26 +6,38 @@ import koriebruh.dev.management_spring.model.LoginResponse;
 import koriebruh.dev.management_spring.model.RegisterRequest;
 import koriebruh.dev.management_spring.model.RegisterResponse;
 import koriebruh.dev.management_spring.repository.AdminRepository;
+import koriebruh.dev.management_spring.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 public class AdminService {
 
+    // debug info
+    private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
+
     @Autowired
     private AdminRepository adminRepository;
-//    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public RegisterResponse registerAdmin(RegisterRequest registerRequest) {
 
         Admin admin = new Admin();
+        String encryptPsw = passwordEncoder.encode(registerRequest.getPassword());
+
         admin.setUsername(registerRequest.getUsername());
-        admin.setPassword(registerRequest.getPassword());
+        admin.setPassword(encryptPsw);
         admin.setEmail(registerRequest.getEmail());
 
         adminRepository.save(admin);
@@ -41,23 +53,21 @@ public class AdminService {
             throw new IllegalArgumentException("Admin with id "+ id +" is not found");
         }
     }
-//
-//    public LoginResponse loginAdmin(LoginRequest loginRequest) {
-//        Admin admin = adminRepository.findByUsername(loginRequest.getUsername());
-//
-//        if (admin != null && passwordEncoder.matches(loginRequest.getPassword(), admin.getPassword())) {
-//            String token = generateToken(admin);
-//            return new LoginResponse(admin.getId(), token, "Login successful!");
-//        } else{
-//            throw new IllegalArgumentException("Admin with name "+ loginRequest.getUsername() + " is not found");
-//        }
-//    }
-//
-//
-//    //STATIC DULU BG JWT BELUM DI BIKIN
-//    public String generateToken(Admin admin) {
-//        // Contoh logika pembuatan token
-//        return "generated-jwt-token";
-//    }
+
+    public LoginResponse loginAdmin(LoginRequest loginRequest) {
+        Admin admin = adminRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
+
+        logger.info("username"+loginRequest.getUsername());
+        logger.info("pass"+loginRequest.getPassword());
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), admin.getPassword())){
+            throw new IllegalArgumentException("Invalid username or Invalid password");
+        }
+
+
+        String token = jwtUtil.generateToken(admin.getUsername(), String.valueOf(admin.getId()));
+        return new LoginResponse(admin.getId(), token, "login successfully");
+    }
 
 }

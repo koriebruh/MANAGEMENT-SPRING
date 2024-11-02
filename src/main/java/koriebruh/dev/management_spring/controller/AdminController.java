@@ -8,32 +8,31 @@ import koriebruh.dev.management_spring.model.RegisterResponse;
 import koriebruh.dev.management_spring.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/admins")
+@RequestMapping("api/auth")
 public class AdminController {
 
     @Autowired
      private AdminService adminService;
 
-    @PostMapping(consumes = "application/json")
+    @PostMapping(path = "/register", consumes = "application/json")
     public ResponseEntity<RegisterResponse> addAdmin(@Validated @RequestBody RegisterRequest registerRequest) {
         RegisterResponse registerResponse = adminService.registerAdmin(registerRequest);
         return new ResponseEntity<>(registerResponse, HttpStatus.CREATED);
     }
 
-//    @PostMapping(path = "/login",
-//            consumes = "application/json"
-//    )
-//    public ResponseEntity<LoginResponse> loginAdmin(@Validated @RequestBody LoginRequest loginRequest) {
-//        LoginResponse loginResponse = adminService.loginAdmin(loginRequest);
-//        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
-//    }
-//
+    @PostMapping(path = "/login",
+            consumes = "application/json"
+    )
+    public ResponseEntity<LoginResponse> loginAdmin(@Validated @RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = adminService.loginAdmin(loginRequest);
+        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+    }
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteAdmin(@PathVariable int id) {
         try {

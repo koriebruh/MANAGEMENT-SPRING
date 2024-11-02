@@ -1,15 +1,25 @@
-### GET request to example server
-POST http://localhost:8080/api/admins
+### CREATE ACC
+POST http://localhost:8080/api/auth/register
 Accept: application/json
 Content-Type: application/json
 
 {
-  "username": "koriebro",
-  "password": "Jamal123",
+  "username": "koriebrsaddddddddddddo",
+  "password": "Jamalasddddddddddd123",
   "email": "koriebro@gmail.com"
 }
 
-###
+### LOGIN
+POST http://localhost:8080/api/auth/login
+Accept: application/json
+Content-Type: application/json
 
-DELETE http://localhost:8080/api/admins/2
+{
+  "username": "koriebrsaddddddddddddo",
+  "password": "Jamalasddddddddddd123"
+}
+
+
+### DELETE USER
+DELETE http://localhost:8080/api/auth/12
 Accept: application/json
